@@ -2,7 +2,7 @@ import { createElement as h } from "react";
 import type { ScrollScrubScene, ScrollScrubTheme } from "@/components/scroll-scrub/scroll-scrub";
 import { whatsapp } from "@/lib/ghasilak";
 export const scrollScrubTheme: ScrollScrubTheme = {accent:"#174B87",background:"#161616",ink:"#FFFFFF",muted:"#e2dfd8"};
-const media = {clip:"/assets/world/scene-01.mp4", mobileClip:"/assets/world/scene-01-mobile.mp4",poster:"/assets/world/scene-01-poster.png",mobilePoster:"/assets/world/scene-01-mobile-poster.png"};
+const media = {clip:"./assets/world/scene-01.mp4", mobileClip:"./assets/world/scene-01-mobile.mp4",poster:"./assets/world/scene-01-poster.png",mobilePoster:"./assets/world/scene-01-mobile-poster.png"};
 const actions = (en: boolean) => h("div",{className:"hero-conversion"},
 h("div",{className:"hero-offer"},h("strong",null,"400"),h("span",null,en?"BAISA · WASH + IRON":"بيسة · غسيل وكي الثوب")),
 h("p",{className:"hero-minimum"},en?"Minimum order: 8 items":"الحد الأدنى للطلب 8 قطع"),
