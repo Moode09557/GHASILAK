@@ -1,0 +1,46 @@
+name: Import GHASILAK website
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/import-ghasilak.yml']
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.event.head_commit.message == 'Import verified GHASILAK website archive'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download and verify website archive
+        run: |
+          curl -fL --retry 3 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JjdDNf3htbWem7qnWtfkKQBSQ0/ab516559-3405-4ef5-83dd-872ac3d13522.zip' -o /tmp/ghasilak.zip
+          echo '41f2591138ef47737f1cce306049ff53809a5b0d5b4efd94fcd6a573e7d66091  /tmp/ghasilak.zip' | sha256sum -c -
+      - name: Extract source and media
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root=Path.cwd().resolve()
+          with zipfile.ZipFile('/tmp/ghasilak.zip') as z:
+              assert z.testzip() is None
+              for entry in z.infolist():
+                  if entry.is_dir(): continue
+                  parts=Path(entry.filename).parts
+                  if parts[0] != 'GHASILAK': raise ValueError('Unexpected archive root')
+                  rel=Path(*parts[1:])
+                  if '.git' in rel.parts or rel.as_posix().startswith('.github/'): continue
+                  target=(root/rel).resolve()
+                  if not target.is_relative_to(root): raise ValueError('Unsafe archive path')
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  target.write_bytes(z.read(entry))
+          (root/'README.md').write_text((root/'README-AR.md').read_text()+'\n\nGitHub source: https://github.com/Moode09557/GHASILAK\n')
+          assert (root/'app/public/assets/world/scene-01.mp4').stat().st_size > 0
+          assert 'شمال الباطنة' in (root/'app/src/lib/ghasilak.ts').read_text()
+          PY
+      - name: Commit website
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app refs README.md README-AR.md FILES-SHA256.txt .gitignore
+          git commit -m 'Add complete GHASILAK website, media and Oman governorates'
+          git push origin HEAD:main
