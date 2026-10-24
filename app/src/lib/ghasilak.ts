@@ -1,6 +1,6 @@
-export const phone = "+968 72484046";
+export const phone = "+968 77989743";
 export const orderMessage = "مرحبًا غسيلك 👋\nأرغب في طلب خدمة غسيل واستلام من المنزل (الحد الأدنى 8 قطع).\n\nالاسم:\nالمنطقة:\nعدد الأثواب:\nقطع أو خدمات أخرى:\nالموقع:\nوقت الاستلام المناسب:\nملاحظات:\n\nأرجو تأكيد السعر وموعد الاستلام.";
-export const whatsapp = (message = orderMessage) => "https://wa.me/96872484046?text=" + encodeURIComponent(message);
+export const whatsapp = (message = orderMessage) => "https://wa.me/96877989743?text=" + encodeURIComponent(message);
 export const faqAr = [
 ["ما الحد الأدنى للطلب؟","الحد الأدنى للطلب 8 قطع. أرسل عدد القطع وموقعك عبر واتساب لتنسيق الاستلام."],
 ["كم سعر غسيل وكي الثوب؟","400 بيسة للثوب."],
